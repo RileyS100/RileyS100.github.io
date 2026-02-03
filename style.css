@@ -1,6 +1,6 @@
 body {
-    background: #b82121;
-    color: #942424;
+    background: #8cd882;
+    color: #0f5705;
     padding: 10px;
     font-family: Arial, sans-serif;
 }
@@ -12,7 +12,7 @@ body {
 
 /* navigation menu */
 nav {
-    background: #ef7229;
+    background: #519e42;
     margin: 0 auto;
     display: flex;
     padding: 10px;
@@ -22,7 +22,7 @@ nav {
 h1 {
     display: flex;
     align-items: center;
-    color: #942424;
+    color: #0f5705;
     flex: 1;
     margin: 0;
 }
@@ -41,12 +41,12 @@ h1 {
 
 a {
     text-decoration: none;
-    color: #942424;
+    color: #0f5705;
 }
 
 /* main container area beneath menu */
 main {
-    background: rgb(245, 238, 219);
+    background: #519e42;
     display: flex;
     margin-top: 20px;
 }
