@@ -86,14 +86,14 @@ h2, h3 {
 }
 
 #portfolio li {
-  background: #fff;
+  background: #8cd882;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
 }
 
 #portfolio li:hover {
-  background: #eee;
+  background: #8cd882;
 }
 
 #portfolio a {

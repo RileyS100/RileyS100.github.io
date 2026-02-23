@@ -1,3 +1,5 @@
+
+
 $(function () {
   // initialize canvas and context when able to
   canvas = document.getElementById("canvas");
@@ -27,21 +29,37 @@ $(function () {
     //////////////////////////////////
 
     // TODO 1 - Enable the Grid
-    // toggleGrid();
+    //toggleGrid();
 
 
     // TODO 2 - Create Platforms
-
-
-
-
+createPlatform(1100,100,100,20,"#519e42")
+createPlatform(1300,100,100,20,"#519e42")
+createPlatform(1100,100,25,400,"#519e42")
+createPlatform(1100,500,300,20,"#519e42")
+createPlatform(1375,100,25,400,"#519e42")
+createPlatform(100,650,150,20,"#519e42")
+createPlatform(350,520,150,20,"#519e42")
+createPlatform(600,400,150,20,"#519e42")
+createPlatform(800,275,150,20,"#519e42")
+createPlatform(1000,150,100,20,"#519e42")
+createPlatform(1100,225,125,20,"#519e42")
+createPlatform(1300,300,100,20,"#519e42")
+createPlatform(1100,400,100,20,"#519e42")
+createPlatform(1100,625,25,150,"#519e42")
+createPlatform(1125,625,100,20,"#519e42")
+createPlatform(1300,500,25,100,"#519e42")
+createPlatform(100,200,100,20,"#519e42")
+createPlatform(200,150,20,50,"#519e42")
+createPlatform(300,225,250,20,"#519e42")
+createPlatform(10,10,200,20,"#519e42")
     // TODO 3 - Create Collectables
-
-
-
+createCollectable("treble", 1300,450)
+createCollectable("treble", 1150,680)
+createCollectable("treble",100,150)
     
     // TODO 4 - Create Cannons
-
+("top",200,2000)
 
     
     
