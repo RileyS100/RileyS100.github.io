@@ -25,7 +25,7 @@
 
   <main>
 <div class="sidebar">
-<img class="sidebar-img" src="https://images.genius.com/91b2b016249b3d200baa7cde72d0a735.1000x1000x1.png">
+<img class="sidebar-img" src="https://c4.wallpaperflare.com/wallpaper/34/753/72/anime-attack-on-titan-mikasa-ackerman-wallpaper-preview.jpg">
 </div>
 
 <div class="content">
@@ -37,6 +37,8 @@
     <li>Band</li>
     <li>Reading</li>
     <li>Listening to music</li>
+    <li>Watching Animie</li>
+    <li>Playing Roblox(My User:thatradomgirley1)</li>
   </ul>
 </div>
 
@@ -44,5 +46,20 @@
 </div>
   </main>
     </div>
+    <script>
+      // Sparkle effect on mousemove
+      document.addEventListener("mousemove", function (e) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = e.pageX - 10 + "px"; // center on cursor
+        sparkle.style.top = e.pageY - 10 + "px";
+        document.body.appendChild(sparkle);
+
+        // Remove after animation
+        setTimeout(() => {
+          sparkle.remove();
+        }, 1000);
+      });
+    </script>
   </body>
 </html>

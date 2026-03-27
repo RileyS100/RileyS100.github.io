@@ -57,7 +57,7 @@ main {
 }
 
 .sidebar-img {
-  width: 200px;
+  width: 300px;
 }
 
 .content {
@@ -185,4 +185,34 @@ h3 {
 .close:focus {
   color: #bbb;
   text-decoration: none;
+}
+/* Sparkle styles */
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #8234b6, #b076c2, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 1s ease-out forwards;
+  z-index: 1000;
+  box-shadow:
+    0 0 20px #b57ed4,
+    0 0 40px #934ec2,
+    0 0 60px #a458cffa;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 1;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2) rotate(360deg);
+  }
 }

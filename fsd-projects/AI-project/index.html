@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Woodwind & Brass Studio</title>
+    <style>
+        body { 
+            background: #121212; color: white; font-family: 'Segoe UI', sans-serif; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; overflow: hidden;
+        }
+
+        #controls { margin-bottom: 30px; display: flex; gap: 10px; z-index: 10; }
+        .mode-btn {
+            padding: 10px 15px; cursor: pointer; border: 2px solid #444;
+            background: #222; color: #888; border-radius: 5px; font-weight: bold; transition: 0.3s;
+        }
+        .mode-btn.active { border-color: #f1c40f; color: white; background: #333; }
+
+        /* Instrument Container Logic */
+        #instrument-container {
+            display: none; align-items: center; transition: all 0.5s ease;
+        }
+
+        .section { transition: all 0.5s; position: relative; }
+        
+        /* Theme Colors */
+        .wood .section { background: #1a1a1a; border: 1px solid #333; }
+        .gold .section { background: linear-gradient(180deg, #d4af37, #f9d976, #d4af37); border: 1px solid #996515; }
+
+        /* Layouts */
+        .vertical { flex-direction: column; }
+        .horizontal { flex-direction: row !important; }
+
+        /* Component Shapes */
+        .mouthpiece { width: 25px; height: 40px; border-radius: 10px 10px 0 0; background: #050505 !important; }
+        .barrel { width: 40px; height: 30px; border-top: 3px solid #888; border-bottom: 3px solid #888; }
+        
+        .body-tube { 
+            width: 45px; height: 300px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: space-around;
+            padding: 15px 0;
+        }
+
+        /* Sax Curve */
+        #sax-curve { width: 80px; height: 40px; border-radius: 0 0 40px 40px; border-top: none; display: none; margin-top: -5px;}
+
+        /* Trumpet Specifics */
+        .trumpet-pipe { width: 100px; height: 20px; display: none; }
+        .trumpet-valves { width: 120px; height: 60px; display: none; justify-content: space-around; padding-top: 5px; border-radius: 5px; }
+
+        .bell { width: 45px; height: 70px; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+        .trumpet-bell { width: 80px; height: 100px; clip-path: polygon(0 35%, 100% 0, 100% 100%, 0 65%); display: none; }
+
+        /* Keys & Valves */
+        .key {
+            width: 26px; height: 26px; background: #eee; border-radius: 50%;
+            border: 2px solid #777; color: #111; font-weight: bold; font-size: 11px;
+            display: flex; align-items: center; justify-content: center; z-index: 5;
+        }
+        .active { background: #f1c40f !important; transform: scale(0.9); box-shadow: inset 0 0 8px rgba(0,0,0,0.5); }
+
+        #start-btn { padding: 20px 40px; font-size: 20px; cursor: pointer; background: #27ae60; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div id="controls" style="display:none">
+        <button class="mode-btn active" onclick="setInstrument('clarinet')">🥖 CLARINET</button>
+        <button class="mode-btn" onclick="setInstrument('saxophone')">🎷 SAX</button>
+        <button class="mode-btn" onclick="setInstrument('trumpet')">🎺 TRUMPET</button>
+    </div>
+
+    <button id="start-btn">🎵 START STUDIO</button>
+
+    <div id="instrument-container" class="vertical wood">
+        <div id="ww-top" style="display: flex; flex-direction: column; align-items: center;">
+            <div class="mouthpiece section"></div>
+            <div class="barrel section"></div>
+        </div>
+
+        <div id="tr-pipe-1" class="section gold trumpet-pipe"></div>
+
+        <div id="main-body" class="section body-tube">
+            <div class="key" id="key-A">A</div>
+            <div class="key" id="key-S">S</div>
+            <div class="key" id="key-D">D</div>
+            <div class="key" id="key-F">F</div>
+            <div class="key" id="key-J">J</div>
+            <div class="key" id="key-K">K</div>
+            <div class="key" id="key-L">L</div>
+        </div>
+
+        <div id="sax-curve" class="section gold"></div>
+        <div id="tr-pipe-2" class="section gold trumpet-pipe"></div>
+
+        <div id="ww-bell" class="section bell"></div>
+        <div id="tr-bell" class="section trumpet-bell gold"></div>
+    </div>
+
+    <script>
+        let audioCtx, mainGain, currentInstrument = 'clarinet';
+        let activeNotes = {};
+
+        const freqs = {'a': 440, 's': 392, 'd': 349.2, 'f': 329.6, 'j': 293.6, 'k': 261.6, 'l': 233};
+
+        function setInstrument(type) {
+            currentInstrument = type;
+            const container = document.getElementById('instrument-container');
+            const mainBody = document.getElementById('main-body');
+            
+            // UI Update
+            document.querySelectorAll('.mode-btn').forEach(b => {
+                b.classList.toggle('active', b.innerText.toLowerCase().includes(type.slice(0,3)));
+            });
+
+            // Reset visibility
+            document.getElementById('ww-top').style.display = (type === 'trumpet') ? 'none' : 'flex';
+            document.getElementById('ww-bell').style.display = (type === 'trumpet') ? 'none' : 'block';
+            document.getElementById('sax-curve').style.display = (type === 'saxophone') ? 'block' : 'none';
+            document.querySelectorAll('.trumpet-pipe').forEach(p => p.style.display = (type === 'trumpet') ? 'block' : 'none');
+            document.getElementById('tr-bell').style.display = (type === 'trumpet') ? 'block' : 'none';
+            
+            // Woodwind keys vs Trumpet valves
+            document.getElementById('key-A').style.display = (type === 'trumpet') ? 'none' : 'flex';
+            document.getElementById('key-S').style.display = (type === 'trumpet') ? 'none' : 'flex';
+            document.getElementById('key-D').style.display = (type === 'trumpet') ? 'none' : 'flex';
+            document.getElementById('key-F').style.display = (type === 'trumpet') ? 'none' : 'flex';
+
+            if(type === 'trumpet') {
+                container.className = 'horizontal gold';
+                mainBody.style.width = '120px'; mainBody.style.height = '60px';
+                mainBody.style.flexDirection = 'row';
+            } else {
+                container.className = 'vertical ' + (type === 'clarinet' ? 'wood' : 'gold');
+                mainBody.style.width = '45px'; mainBody.style.height = '300px';
+                mainBody.style.flexDirection = 'column';
+            }
+        }
+
+        document.getElementById('start-btn').onclick = () => {
+            audioCtx = new AudioContext();
+            mainGain = audioCtx.createGain();
+            mainGain.gain.value = 0.2;
+            mainGain.connect(audioCtx.destination);
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('controls').style.display = 'flex';
+            document.getElementById('instrument-container').style.display = 'flex';
+        };
+
+        function play(freq, key) {
+            if (activeNotes[key] || (currentInstrument === 'trumpet' && !['j','k','l'].includes(key))) return;
+            
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            if (currentInstrument === 'clarinet') {
+                osc.type = 'triangle';
+                filter.type = 'lowpass';
+                filter.frequency.value = 1200;
+            } else if (currentInstrument === 'saxophone') {
+                osc.type = 'square';
+                filter.type = 'bandpass';
+                filter.frequency.value = freq * 1.5;
+            } else {
+                osc.type = 'sawtooth';
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3500, audioCtx.currentTime);
+                filter.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            }
+
+            osc.frequency.value = freq;
+            g.gain.setValueAtTime(0, audioCtx.currentTime);
+            g.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.04);
+
+            osc.connect(filter).connect(g).connect(mainGain);
+            osc.start();
+            activeNotes[key] = { osc, g };
+            document.getElementById('key-' + key.toUpperCase()).classList.add('active');
+        }
+
+        function stop(key) {
+            if (activeNotes[key]) {
+                const { osc, g } = activeNotes[key];
+                g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                osc.stop(audioCtx.currentTime + 0.15);
+                delete activeNotes[key];
+                document.getElementById('key-' + key.toUpperCase()).classList.remove('active');
+            }
+        }
+
+        window.onkeydown = (e) => { if(freqs[e.key.toLowerCase()]) play(freqs[e.key.toLowerCase()], e.key.toLowerCase()); };
+        window.onkeyup = (e) => { if(freqs[e.key.toLowerCase()]) stop(e.key.toLowerCase()); };
+    </script>
+</body>
+</html>

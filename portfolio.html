@@ -33,9 +33,27 @@
 <li>
   <a href="fsd-projects/circularity/">Circularity: A poetic motion experiment with circles</a>
 </li>
+<li>
+  <a href="fsd-projects/AI-project/index.html">Make Your Own Music!:)</a>
+</li>
     </ul>
 </div>
         </main>
     </div>
+    <script>
+      // Sparkle effect on mousemove
+      document.addEventListener("mousemove", function (e) {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.style.left = e.pageX - 10 + "px"; // center on cursor
+        sparkle.style.top = e.pageY - 10 + "px";
+        document.body.appendChild(sparkle);
+
+        // Remove after animation
+        setTimeout(() => {
+          sparkle.remove();
+        }, 1000);
+      });
+    </script>
   </body>
 </html>
