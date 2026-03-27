@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 class="gallery-title">Photo Gallary</h1>
+    <div class="gallery">
+      <figure>
+        <img src="assets/beauty1.JPG" alt="Beauty 1" />
+        <figcaption>Beauty 1</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/beauty2.JPG" alt="Beauty 2" />
+        <figcaption>Beauty 2</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/chair1.JPG" alt="Chair 1" />
+        <figcaption>Chair 1</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/contrast.JPG" alt="Contrast" />
+        <figcaption>Contrast</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Line.JPG" alt="Line" />
+        <figcaption>Line</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Shape.JPG" alt="Shape" />
+        <figcaption>Shape</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Spirit.JPG" alt="Spirit" />
+        <figcaption>Spirit</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Symbol.JPG" alt="Symbol" />
+        <figcaption>Symbol</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/texture.JPG" alt="Texture" />
+        <figcaption>Texture</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Me.JPG" alt="Me" />
+        <figcaption>Me</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Ant.JPG" alt="Ant" />
+        <figcaption>Ant</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Exsample.JPG" alt="Example" />
+        <figcaption>Example</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/Represent.JPG" alt="Represent" />
+        <figcaption>Represent</figcaption>
+      </figure>
+    </div>
+
+    <div id="modal" class="modal">
+      <span class="close">&times;</span>
+      <img id="modal-img" class="modal-content" />
+    </div>
+
+    <script>
+      // Get the modal
+      var modal = document.getElementById("modal");
+
+      // Get the image and insert it inside the modal
+      var modalImg = document.getElementById("modal-img");
+      var images = document.querySelectorAll(".gallery img");
+
+      images.forEach(function (img) {
+        img.onclick = function () {
+          modal.style.display = "block";
+          modalImg.src = this.src;
+        };
+      });
+
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      // When the user clicks anywhere outside of the modal content, close it
+      modal.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -60,7 +60,7 @@
         }
 
         // changes the text displayed on the Box
-        function changeBoxText(points) {
+        function changeBoxText(0) {
           box.text(newtext);
         }
 
@@ -101,10 +101,11 @@
          * - move the box to the left side of the screen.
          */
         function handleBoxClick() {
+          changeBoxText(points)
           positionX = 0
-          points++  
+          points = points + 1 
           speed = 3 * points + 10;
-
+          
         }
 
 
